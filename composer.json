@@ -1,0 +1,40 @@
+{
+    "name": "kylewlawrence/laravel-mainwp-api",
+    "type": "library",
+    "description": "Laravel API for MainWP",
+    "minimum-stability": "beta",
+    "keywords": [
+        "mainwp",
+        "laravel",
+        "rest-api"
+    ],
+    "homepage": "https://klaw.dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "KyleWLawrence",
+            "email": "Kyle@klaw.dev"
+        }
+    ],
+    "require": {
+        "illuminate/support": ">=8.0",
+        "guzzlehttp/guzzle": ">=7.0",
+        "guzzlehttp/psr7": ">=2.0",
+        "php": ">=8.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KyleWLawrence\\MainWP\\Providers\\MainWPServiceProvider"
+            ],
+            "aliases": {
+                "MainWP": "KyleWLawrence\\MainWP\\Facades\\MainWP"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "KyleWLawrence\\MainWP\\": "src"
+        }
+    }
+}
