@@ -25,17 +25,15 @@ class HttpClient
 
     protected string $apiUrl;
 
-    protected ?string $zone = null;
-
     protected Auth $auth;
 
     /**
      * @param  \GuzzleHttp\Client  $guzzle
      */
     public function __construct(
-        protected string $hostname = 'api.mainwp.com',
+        protected string $domain = '',
         protected string $scheme = 'https',
-        protected string $base = 'client/v4',
+        protected string $base = 'wp-json/mainwp/v1',
         public ?Client $guzzle = null,
         protected Debug $debug = new Debug,
     ) {
@@ -49,7 +47,7 @@ class HttpClient
             $this->guzzle = $guzzle;
         }
 
-        $this->setApiUrl();
+        $this->apiUrl = "$this->scheme://$this->domain/$base/";
         $this->debug = new Debug();
     }
 
@@ -104,25 +102,9 @@ class HttpClient
         return $this->apiUrl;
     }
 
-    public function setApiUrl(): HttpClient
-    {
-        $zone = ($this->zone) ? "zones/$this->zone/" : '';
-        $this->apiUrl = "$this->scheme://$this->hostname/$this->base/$zone";
-
-        return $this;
-    }
-
     public function getApiBasePath(): string
     {
         return $this->apiBasePath;
-    }
-
-    public function setZone(?string $zone = null): HttpClient
-    {
-        $this->zone = $zone;
-        $this->setApiUrl();
-
-        return $this;
     }
 
     /**

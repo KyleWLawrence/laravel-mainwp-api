@@ -13,7 +13,7 @@ composer require kylewlawrence/laravel-mainwp-api
 The facade is automatically installed.
 
 ```php
-MainWP::get('zones', ['per_page' => 100]);
+MainWP::get('sites', ['per_page' => 100]);
 ```
 
 ## Configuration
@@ -26,9 +26,17 @@ php artisan vendor:publish --provider="KyleWLawrence\MainWP\Providers\MainWPServ
 
 Set your configuration using **environment variables**, either in your `.env` file or on your server's control panel:
 
-- `MAINWP_ACCESS_KEY`
+- `MAINWP_DOMAIN`
 
-The API access AccessKey. You can create one as described here: `https://dash.mainwp.net/account/settings`
+The fully qualified domain name where MainWP is hosted.
+
+- `MAINWP_CONSUMER_KEY`
+
+The API access consumer auth. You can create one as described here: `https://kb.mainwp.com/docs/mainwp-rest-api/`
+
+- `MAINWP_CONSUMER_SECRET`
+
+Accompanying the consumer key.
 
 - `MAINWP_DRIVER` _(Optional)_
 
@@ -57,6 +65,10 @@ class MyClass {
 
     public function __construct(MainWPService $mainwp_service) {
         $this->mainwp_service = $mainwp_service;
+    }
+
+    public function getSites() {
+        $this->mainwp_service->get('sites/all-sites');
     }
 
 }

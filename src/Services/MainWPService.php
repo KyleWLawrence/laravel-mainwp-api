@@ -15,18 +15,22 @@ class MainWPService
      *
      * @throws Exception
      */
+    public HttpClient $client;
+
     public function __construct(
+        private string $domain = '',
         private string $consumer_key = '',
         private string $consumer_secret = '',
-        public HttpClient $client = new HttpClient,
     ) {
+        $this->domain = ($this->domain) ? $this->domain : config('mainwp-laravel.domain');
         $this->consumer_key = ($this->consumer_key) ? $this->consumer_key : config('mainwp-laravel.consumer_key');
         $this->consumer_secret = ($this->consumer_secret) ? $this->consumer_secret : config('mainwp-laravel.consumer_secret');
 
-        if (! $this->consumer_key || ! $this->consumer_secret) {
-            throw new InvalidArgumentException('Please set MAINWP_CONSUMER_KEY & MAINWP_CONSUMER_SECRET environment variables.');
+        if (! $this->domain || ! $this->consumer_key || ! $this->consumer_secret) {
+            throw new InvalidArgumentException('Please set MAINWP_DOMAIN & MAINWP_CONSUMER_KEY & MAINWP_CONSUMER_SECRET environment variables.');
         }
 
+        $this->client = new HttpClient($this->domain);
         $this->client->setAuth('consumer_auth', ['consumer_key' => $this->consumer_key, 'consumer_secret' => $this->consumer_secret]);
     }
 
