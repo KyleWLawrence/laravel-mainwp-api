@@ -2,7 +2,7 @@
 
 namespace KyleWLawrence\MainWP\Utilities;
 
-use KyleWLawrence\MainWP\Api\Exceptions\AuthException;
+use KyleWLawrence\MainWP\Http\Exceptions\AuthException;
 use Psr\Http\Message\RequestInterface;
 
 /**
