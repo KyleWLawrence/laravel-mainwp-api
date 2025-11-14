@@ -30,9 +30,17 @@ Set your configuration using **environment variables**, either in your `.env` fi
 
 The fully qualified domain name where MainWP is hosted.
 
+- `MAINWP_BEARER_TOKEN`
+
+If you are using the V2 API, you will need to set the bearer token for authentication. You can create one as described here: `https://kb.mainwp.com/docs/mainwp-rest-api/`
+
+- `MAINWP_API_VERSION` _(Optional)_
+
+The version of the MainWP API to use. Defaults to `v2`. If you are using the V1 API, set this to `v1`.
+
 - `MAINWP_CONSUMER_KEY`
 
-The API access consumer auth. You can create one as described here: `https://kb.mainwp.com/docs/mainwp-rest-api/`
+If you are using the `v1` API, these are the two credentials you will need to complete. You can create them as described here: `https://kb.mainwp.com/docs/mainwp-rest-api/`
 
 - `MAINWP_CONSUMER_SECRET`
 

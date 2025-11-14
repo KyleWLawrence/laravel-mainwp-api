@@ -17,7 +17,10 @@ use KyleWLawrence\MainWP\Utilities\Auth;
  */
 class HttpClient
 {
-    const VERSION = '1.0.0';
+    const VERSION = '2.0.0';
+    const API_VERSION_1 = 'v1';
+    const API_VERSION_2 = 'v2';
+    const DEFAULT_VERSION = self::API_VERSION_2;
 
     private array $headers = [];
 
@@ -27,16 +30,22 @@ class HttpClient
 
     protected Auth $auth;
 
+    protected string $apiVersion;
+
     /**
      * @param  \GuzzleHttp\Client  $guzzle
      */
     public function __construct(
         protected string $domain = '',
+        protected string $version = self::DEFAULT_VERSION,
         protected string $scheme = 'https',
-        protected string $base = 'wp-json/mainwp/v1',
+        protected ?string $base = null,
         public ?Client $guzzle = null,
         protected Debug $debug = new Debug,
     ) {
+        $this->apiVersion = $this->version;
+        // Set base path based on version if not explicitly provided
+        $this->base = $this->base ?: "wp-json/mainwp/{$this->apiVersion}";
         if (is_null($guzzle)) {
             $handler = HandlerStack::create();
             $handler->push(new RetryHandler(['retry_if' => function ($retries, $request, $response, $e) {
@@ -47,7 +56,7 @@ class HttpClient
             $this->guzzle = $guzzle;
         }
 
-        $this->apiUrl = "$this->scheme://$this->domain/$base/";
+        $this->apiUrl = "$this->scheme://$this->domain/$this->base/";
         $this->debug = new Debug();
     }
 
@@ -206,15 +215,13 @@ class HttpClient
      */
     public function delete(string $endpoint): ?object
     {
-        $extraOptions = array_merge($options, [
-            'postFields' => $patchData,
-            'method' => 'PATCH',
-        ]);
-
+        $options = [
+            'method' => 'DELETE',
+        ];
         $response = Http::send(
             $this,
             $endpoint,
-            $extraOptions
+            $options
         );
 
         return $response;

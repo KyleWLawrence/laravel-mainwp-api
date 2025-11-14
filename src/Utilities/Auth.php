@@ -17,6 +17,11 @@ class Auth
     const CONSUMER_AUTH = 'consumer_auth';
 
     /**
+     * The authentication setting to use Bearer Token Auth API.
+     */
+    const BEARER_TOKEN = 'bearer_token';
+
+    /**
      * @var string
      */
     protected $authStrategy;
@@ -33,7 +38,7 @@ class Auth
      */
     protected static function getValidAuthStrategies()
     {
-        return [self::CONSUMER_AUTH];
+        return [self::CONSUMER_AUTH, self::BEARER_TOKEN];
     }
 
     /**
@@ -55,8 +60,12 @@ class Auth
         $this->authStrategy = $strategy;
 
         if ($strategy == self::CONSUMER_AUTH) {
-            if (! array_key_exists('consumer_auth', $options)) {
+            if (! array_key_exists('consumer_key', $options) || ! array_key_exists('consumer_secret', $options)) {
                 throw new AuthException('Please supply `consumer_key` and `consumer_secret` for consumer_auth auth.');
+            }
+        } elseif ($strategy == self::BEARER_TOKEN) {
+            if (! array_key_exists('bearer_token', $options)) {
+                throw new AuthException('Please supply `bearer_token` for bearer_token auth.');
             }
         }
 
@@ -73,12 +82,14 @@ class Auth
     public function prepareRequest(RequestInterface $request, array $requestOptions = []): array
     {
         if ($this->authStrategy === self::CONSUMER_AUTH) {
-            $consumer_auth = $this->authOptions['consumer_auth'];
-
+            $consumer_auth = $this->authOptions;
             $uri = $request->getUri();
             $uri = $uri->withQueryValue($uri, 'consumer_key', $consumer_auth['consumer_key']);
             $uri = $uri->withQueryValue($uri, 'consumer_secret', $consumer_auth['consumer_secret']);
             $request = $request->withUri($uri, true);
+        } elseif ($this->authStrategy === self::BEARER_TOKEN) {
+            $bearer_token = $this->authOptions['bearer_token'];
+            $request = $request->withHeader('Authorization', 'Bearer ' . $bearer_token);
         } else {
             throw new AuthException('Please set authentication to send requests.');
         }
