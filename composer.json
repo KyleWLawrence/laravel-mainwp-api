@@ -2,7 +2,7 @@
     "name": "kylewlawrence/laravel-mainwp-api",
     "type": "library",
     "description": "Laravel API for MainWP",
-    "minimum-stability": "beta",
+    "minimum-stability": "stable",
     "keywords": [
         "mainwp",
         "laravel",
@@ -17,10 +17,10 @@
         }
     ],
     "require": {
-        "illuminate/support": ">=8.0",
-        "guzzlehttp/guzzle": ">=7.0",
-        "guzzlehttp/psr7": ">=2.0",
-        "php": ">=8.2"
+        "guzzlehttp/guzzle": "^7.16 || ^8.3",
+        "guzzlehttp/psr7": "^2.13 || ^3.2",
+        "illuminate/support": "^13.0",
+        "php": "^8.5"
     },
     "extra": {
         "laravel": {
@@ -36,5 +36,15 @@
         "psr-4": {
             "KyleWLawrence\\MainWP\\": "src"
         }
+    },
+    "prefer-stable": true,
+    "archive": {
+        "exclude": [
+            "/vendor",
+            "/.history",
+            "/.env",
+            "/.env.*",
+            "/composer.lock"
+        ]
     }
 }

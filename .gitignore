@@ -7,3 +7,9 @@
 /phpcs.xml
 /.phpcs-cache
 /phpstan.neon
+
+/.history/
+
+/.env
+
+/.env.*
